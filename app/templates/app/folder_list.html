@@ -1,196 +1,322 @@
-<!-- templates/image_gallery/folder_list.html -->
+
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Folder List</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Folders</title>
     <style>
-      /* Center the content horizontally */
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        height: 100vh;
-        margin: 0;
-      }
+        html, body{
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+        }
+        .container{
+            display: flex;
+            height: 100%;
+        }
 
-      /* Style the list */
-      table {
-        width: 70%;
-        border-collapse: collapse;
-        text-align: left;
-      }
+        .left-container{
 
-      table,
-      th,
-      td {
-        border: 1px solid #ccc;
-      }
+            width: 30%;
+            height: 100%;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      th,
-      td {
+        .right-container{
+            width: 70%;
+            height: 100%;
+            background-color: rgb(197, 197, 197);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            flex-grow: 1; 
+            overflow-y: auto;
+        }
+
+        #ocr-results {
+            flex-grow: 1; /* Allow the ocr-results div to grow */
+            overflow-y: auto; /* Add vertical scroll if content exceeds height */
+}
+
+        .button1, .button2{
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            height: 40px;
+            width: 100px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .button1:hover {
+            background-color: #0056b3;
+        }
+
+        .button2:hover {
+            background-color: #0056b3;
+        }
+
+        .folder-list{
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+
+        }
+        .folder-list a{
+            cursor: pointer;
+            color: black;
+        }
+
+        #search-input {
+        margin-bottom: 20px;
         padding: 10px;
-      }
-
-      /* Style the OCR buttons */
-      .ocr-button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
+        width: 70%;
+        border: 1px solid #ccc;
         border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
       }
 
-      /* Style the OCR buttons on hover */
-      .ocr-button:hover {
-        background-color: #0056b3;
-      }
+      .folder-box {
+            width: calc(33.33% - 10px);
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            height: 100px;
+            width: 280px;
+            text-align: center;
+        }
 
-      /* Style the "View OCR Images" button */
-      .view-ocr-button {
-        background-color: #28a745;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-      }
+        /* Hover effect for folder boxes */
+        .folder-box:hover {
+            background-color: #e0e0e0;
+        }
 
-      /* Style the "View OCR Images" button on hover */
-      .view-ocr-button:hover {
-        background-color: #1d8e3e;
-      }
+        .folder-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-      /* Highlighted additions */
-      th.ocr-column {
-        background-color: #f2f2f2;
-        font-weight: bold;
-      }
+        /* Style the buttons container */
+        .folder-buttons {
+            margin-top: 10px;
+        }
+
+
+        #folder-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding-left: 128px;
+            padding-right: 128px;
+        }
+
+        .ocr-button, .view-ocr-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        /* Style the OCR and View OCR buttons on hover */
+        .ocr-button:hover, .view-ocr-button:hover {
+            background-color: #0056b3;}
+
+
     </style>
-    <script>
-      const csrfToken = '{{ csrf_token }}';
-    </script>
-  </head>
-  <body>
-    <h1>List of Folders</h1>
-    <table>
-      <tr>
-        <th>Folder Name</th>
-        <!-- Highlighted addition: New column for "View OCR Images" button -->
-        <th class="ocr-column">OCR</th>
-        <th class="ocr-column">View OCR Images</th>
-      </tr>
-      {% for folder in folders %}
-      <tr>
-        <td>
-          <a href="{% url 'view_folder' folder.id %}">{{ folder.name }}</a>
-        </td>
-        <!-- Highlighted addition: OCR button -->
-        <td>
-          <button class="ocr-button" data-folder-id="{{ folder.id }}">
-            OCR
-          </button>
-        </td>
-        <!-- Highlighted addition: "View OCR Images" button -->
-        <td>
-          <button class="view-ocr-button" data-folder-id="{{ folder.id }}">
-            View OCR Images
-          </button>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+</head>
+<body>
+    <div class="container">
+        <div class="left-container">
+            <h1 style="margin-top: 70px;">Profile</h1>
+            <h3>Name: {{ request.user.username }}</h3>
+            <h1>Folders Uploaded</h1>
+            <ul>
+                {% for folder in folders %}
+                    <li class="folder-list"><a href="{% url 'view_folder' folder.id %}">{{ folder.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <!-- Container to display OCR results -->
-    <div id="ocr-results"></div>
+        <div class="right-container">
+            <div class="buttons">
+                <button class="button1" onclick="navigateToUploadFolder()">
+                    Home
+                </button>
+                <button class="button1" onclick="navigateToFolderList()">
+                    Folder List
+                </button>
+                <button id="logout-button" class="button1">
+                    Logout
+                </button>
+            </div>
+        
+            <input type="text" id="search-input" placeholder="Search for a folder..." oninput="filterFolders()" />
+        
+            <div id="folder-boxes">
+                {% for folder in folders %}
+                <div class="folder-box">
+                    <div class="folder-name">{{ folder.name }}</div>
+                    <div class="folder-buttons">
+                        <button class="ocr-button" data-folder-id="{{ folder.id }}">OCR</button>
+                        <button class="view-ocr-button" data-folder-id="{{ folder.id }}">View OCR Images</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
 
-    <!-- JavaScript to trigger OCR checking -->
-    <script>
-      // Get all OCR buttons
-      const ocrButtons = document.querySelectorAll('.ocr-button');
-
-      // Add a click event listener to each OCR button
-      ocrButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const folderId = button.getAttribute('data-folder-id');
-          performOCRCheck(folderId);
-        });
-      });
-
-      // Function to perform OCR checking via AJAX
-      function performOCRCheck(folderId) {
-        // Send an AJAX request to the perform_ocr_check endpoint
-        fetch(`/image-gallery/folders/${folderId}/ocr_check/`)
-          .then((response) => response.json())
-          .then((data) => {
-            // Clear any previous results
-            document.getElementById('ocr-results').innerHTML = '';
-
-            // Check if there are OCR images
-            if (data.ocr_images.length > 0) {
-              // Create a list to display OCR images and their text
-              const ocrList = document.createElement('ul');
-
-              // Iterate through the OCR images and text
-              data.ocr_images.forEach((ocrImage) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                                <h3>${ocrImage.image_file}</h3>
-                                <p>OCR Text: ${ocrImage.ocr_text}</p>
-                            `;
-                ocrList.appendChild(listItem);
-              });
-
-              // Append the list to the results container
-              document.getElementById('ocr-results').appendChild(ocrList);
-            } else {
-              // If no OCR images, display a message
-              document.getElementById('ocr-results').innerHTML =
-                'No OCR images found in this folder.';
+            <div id="ocr-results"></div>
+        </div>
+        
+        <script>
+            // Get all folder boxes
+            const folderBoxes = document.querySelectorAll('.folder-box');
+        
+            // Function to filter folders based on search input
+            function filterFolders() {
+                const searchInput = document.getElementById('search-input').value.toLowerCase();
+        
+                folderBoxes.forEach((folderBox) => {
+                    const folderName = folderBox.querySelector('.folder-name').textContent.toLowerCase();
+                    if (folderName.includes(searchInput)) {
+                        folderBox.style.display = 'block';
+                    } else {
+                        folderBox.style.display = 'none';
+                    }
+                });
             }
-          })
-          .catch((error) => {
-            console.error('Error:', error);
+
+            
+        // Get all OCR buttons
+        const ocrButtons = document.querySelectorAll('.ocr-button');
+  
+        // Add a click event listener to each OCR button
+        ocrButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const folderId = button.getAttribute('data-folder-id');
+            performOCRCheck(folderId);
           });
-      }
-
-      function viewOCRImages(folderId) {
-        // Retrieve the CSRF token from the HTML
-        const csrfToken = '{{ csrf_token }}';
-
-        // Send an AJAX request to the save_ocr_images endpoint
-        fetch(`/image-gallery/folders/${folderId}/save_ocr_images/`, {
-          method: 'POST',
-          headers: {
-            'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              // Redirect to the view_ocr_images page
-              window.location.href = `/image-gallery/folders/${folderId}/view_ocr_images/`;
-            } else {
-              console.error('Failed to save and display OCR images.');
-            }
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-      }
-
-      // Get all "View OCR Images" buttons
-      const viewOCRButtons = document.querySelectorAll('.view-ocr-button');
-
-      // Add a click event listener to each button
-      viewOCRButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const folderId = button.getAttribute('data-folder-id');
-          viewOCRImages(folderId);
         });
-      });
-    </script>
-  </body>
+  
+        // Function to perform OCR checking via AJAX
+        function performOCRCheck(folderId) {
+          // Send an AJAX request to the perform_ocr_check endpoint
+          fetch(`/image-gallery/folders/${folderId}/ocr_check/`)
+            .then((response) => response.json())
+            .then((data) => {
+              // Clear any previous results
+              document.getElementById('ocr-results').innerHTML = '';
+  
+              // Check if there are OCR images
+              if (data.ocr_images.length > 0) {
+                // Create a list to display OCR images and their text
+                const ocrList = document.createElement('ul');
+  
+                // Iterate through the OCR images and text
+                data.ocr_images.forEach((ocrImage) => {
+                  const listItem = document.createElement('li');
+                  listItem.innerHTML = `
+                                  <h3>${ocrImage.image_file}</h3>
+                                  <p>OCR Text: ${ocrImage.ocr_text}</p>
+                              `;
+                  ocrList.appendChild(listItem);
+                });
+  
+                // Append the list to the results container
+                document.getElementById('ocr-results').appendChild(ocrList);
+              } else {
+                // If no OCR images, display a message
+                document.getElementById('ocr-results').innerHTML =
+                  'No OCR images found in this folder.';
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        }
+
+        function navigateToUploadFolder() {
+        window.location.href = '/image-gallery/upload/';
+    }
+
+    // Function to navigate to the view folders page
+    function navigateToFolderList() {
+        window.location.href = '/image-gallery/folders/';
+    }
+
+  
+        function viewOCRImages(folderId) {
+          // Retrieve the CSRF token from the HTML
+          const csrfToken = '{{ csrf_token }}';
+  
+          // Send an AJAX request to the save_ocr_images endpoint
+          fetch(`/image-gallery/folders/${folderId}/save_ocr_images/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Redirect to the view_ocr_images page
+                window.location.href = `/image-gallery/folders/${folderId}/view_ocr_images/`;
+              } else {
+                console.error('Failed to save and display OCR images.');
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        }
+  
+        // Get all "View OCR Images" buttons
+        const viewOCRButtons = document.querySelectorAll('.view-ocr-button');
+  
+        // Add a click event listener to each button
+        viewOCRButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const folderId = button.getAttribute('data-folder-id');
+            viewOCRImages(folderId);
+          });
+        });
+      
+        function logoutUser() {
+        fetch('/image-gallery/logout/')  // Replace with the actual logout URL
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log("Success logout")
+                    window.location.href = '/image-gallery/login/';  // Replace with your login page URL
+                } else {
+                    console.error('Failed to logout.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Add a click event listener to the "Logout" button
+    const logoutButton = document.getElementById('logout-button');
+    logoutButton.addEventListener('click', logoutUser);
+
+
+      </script>
+</body>
 </html>

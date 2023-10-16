@@ -40,11 +40,31 @@
         background-color: #007bff;
         color: #fff;
         cursor: pointer;
+        width: 200px;
       }
 
       /* Style the button on hover */
       button:hover {
         background-color: #0056b3;
+      }
+
+      /* Style the "Folder List" button */
+      .folder-list-button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #4caf50; /* Green */
+        text-decoration: none;
+        color: white;
+      }
+
+      /* Style the "Folder List" button on hover */
+      .folder-list-button:hover {
+        background-color: #45a049;
       }
     </style>
   </head>
@@ -57,6 +77,39 @@
         <input type="file" name="images" multiple required />
         <button type="submit">Upload</button>
       </form>
+
+      <!-- "Folder List" button that redirects to folder_list.html -->
+      <a class="folder-list-button" href="{% url 'folder_list' %}"
+        >Folder List</a
+      >
+      <button id="logout-button" class="folder-list-button">Logout</button>
     </div>
+
+    <!-- Include your JavaScript code after the logout button -->
+<script>
+  // Function to perform user logout
+  function logoutUser() {
+    fetch('/image-gallery/logout/') // Replace with the actual logout URL
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Success logout");
+          window.location.href = '/image-gallery/login/'; // Replace with your login page URL
+        } else {
+          console.error('Failed to logout.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  // Add a click event listener to the logout button
+  const logoutButton = document.getElementById('logout-button');
+  if (logoutButton) {
+    logoutButton.addEventListener('click', logoutUser);
+  }
+</script>
+
   </body>
 </html>

@@ -20,6 +20,16 @@
         margin: 20px 0;
       }
 
+      /* Style the search input */
+      input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
       /* Style the image list */
       ul {
         list-style: none;
@@ -29,6 +39,7 @@
       ul li {
         display: inline-block;
         margin: 10px;
+        text-align: center;
       }
 
       /* Style the images */
@@ -36,17 +47,44 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         box-shadow: 0px 0px 5px #888888;
+        display: block;
+      }
+
+      /* Style the image name */
+      p.image-name {
+        margin-top: 5px;
+        font-size: 16px;
       }
     </style>
   </head>
   <body>
     <h1>{{ folder.name }}</h1>
+    <input type="text" id="search-input" placeholder="Search for an image..." oninput="filterImages()" />
     <ul>
       {% for image in folder.image_set.all %}
-      <li>
+      <li class="image-item">
         <img src="{{ image.image.url }}" alt="{{ image }}" width="200" />
+        <p class="image-name">{{ image.image }}</p>
       </li>
       {% endfor %}
     </ul>
+
+    <script>
+      const imageItems = document.querySelectorAll('.image-item');
+
+      function filterImages() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+
+        imageItems.forEach((imageItem) => {
+          const imageName = imageItem.querySelector('.image-name').textContent.toLowerCase();
+
+          if (imageName.includes(searchInput)) {
+            imageItem.style.display = 'inline-block';
+          } else {
+            imageItem.style.display = 'none';
+          }
+        });
+      }
+    </script>
   </body>
 </html>
