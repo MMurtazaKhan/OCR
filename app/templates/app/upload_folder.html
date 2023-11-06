@@ -4,15 +4,16 @@
     <meta charset="UTF-8" />
     <title>Upload Folder</title>
     <style>
-      /* Center the form vertically and horizontally */
+      /* Set the background color with a gradient */
       body {
+        background: #e5ed9f;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
       }
-
+    
       /* Style the form container */
       .form-container {
         text-align: center;
@@ -20,8 +21,9 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        background-color: white;
       }
-
+    
       /* Style the input fields and button */
       input[type='text'],
       input[type='file'],
@@ -29,42 +31,54 @@
         display: block;
         margin: 10px auto;
         padding: 10px;
-        width: 100%;
+        width: 400px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
       }
-
+    
       /* Style the button with a background color */
       button {
-        background-color: #007bff;
+        background-color: #4caf50; /* Green */
         color: #fff;
         cursor: pointer;
-        width: 200px;
+        width: 180px;
       }
-
+    
       /* Style the button on hover */
       button:hover {
-        background-color: #0056b3;
+        background-color: #309135;
       }
-
+    
       /* Style the "Folder List" button */
       .folder-list-button {
         display: block;
         margin: 10px auto;
         padding: 10px;
-        width: 200px;
+        width: 180px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #4caf50; /* Green */
+        background-color: #007bff; /* Blue */
         text-decoration: none;
         color: white;
       }
-
+    
       /* Style the "Folder List" button on hover */
       .folder-list-button:hover {
-        background-color: #45a049;
+        background-color: #0056b3;
+      }
+    
+      /* Style the logout button with a different background color */
+      #logout-button {
+        background-color: #e74c3c; /* Red */
+        color: #fff;
+        width: 180px;
+      }
+    
+      /* Style the logout button on hover */
+      #logout-button:hover {
+        background-color: #c0392b; /* Darker Red */
       }
     </style>
   </head>

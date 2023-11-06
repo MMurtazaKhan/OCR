@@ -1,110 +1,121 @@
 <!-- templates/app/view_ocr_images.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>View OCR Images</title>
     <style>
-        /* Center the content horizontally */
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            height: 100vh;
-            margin: 0;
-        }
+      /* Center the content horizontally */
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+        margin: 0;
+        background: #e5ed9f;
+      }
+      
+      /* Style the list */
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      
+      li {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      /* Style the OCR images */
+      img {
+        width: 50%;
+        height: 50%;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+      }
+      
+      /* Style the OCR text */
+      .ocr-text {
+        font-weight: 300;
+        margin-top: 10px;
+        width: 50%;
+      }
+      
+      /* Style the download button */
+      .download-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      
+      .download-pdf {
+        padding-top: 5px;
+        color: black;
+        cursor: pointer;
+        font-size: 15px;
+      }
+      
+      /* Style the download button on hover */
+      .download-button:hover {
+        background-color: #0056b3;
+      }
 
-        /* Style the list */
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+      .ocr-head{
+        font-weight: bold;
+        font-size: 18px;
+      }
 
-        li {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Style the OCR images */
-        img {
-            max-width: 100%;
-            border: 1px solid #ccc;
-        }
-
-        /* Style the OCR text */
-        .ocr-text {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        /* Style the download button */
-        .download-button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .download-pdf{
-            padding-top: 5px;
-            color: black;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        /* Style the download button on hover */
-        .download-button:hover {
-            background-color: #0056b3;
-        }
+      .folder-head{
+        color: #b38f00;
+      }
     </style>
-</head>
-<body>
-<h1>OCR Images for {{ folder.name }}</h1>
-<ul>
-    {% for ocr_image in ocr_images %}
-    <li>
-        <img src="{{ ocr_image.image.url }}" alt="{{ ocr_image.image }}" />
-        <p class="ocr-text">OCR Text: {{ ocr_image.ocr_text }}</p>
-        <!-- Download button for the image -->
-        <button class="download-button" data-image-url="{{ ocr_image.image.url }}">Download</button>
-        <a class="download-pdf" href="{% url 'generate_pdf' image_id=ocr_image.id %}">Download PDF</a>
-    </li>
-    {% endfor %}
-</ul>
-<script>
-    // JavaScript to handle download functionality
-    document.addEventListener('DOMContentLoaded', function () {
+  </head>
+  <body>
+    <h1 style="color: rgb(58, 57, 57);" >OCR Images for <span class = "folder-head">{{ folder.name }}</span></h1>
+    <ul>
+      {% for ocr_image in ocr_images %}
+        <li>
+          <img src="{{ ocr_image.image.url }}" alt="{{ ocr_image.image }}" />
+          <p class="ocr-text"><span class="ocr-head">OCR Text: </span>{{ ocr_image.ocr_text }}</p>
+          <!-- Download button for the image -->
+          <button class="download-button" data-image-url="{{ ocr_image.image.url }}">Download</button>
+          {% comment %} <a class="download-pdf" href="{% url 'generate_pdf' image_id = ocr_image.id %}">Download PDF</a> {% endcomment %}
+        </li>
+      {% endfor %}
+    </ul>
+    <script>
+      // JavaScript to handle download functionality
+      document.addEventListener('DOMContentLoaded', function () {
         // Get all download buttons
-        const downloadButtons = document.querySelectorAll('.download-button');
-
+        const downloadButtons = document.querySelectorAll('.download-button')
+      
         // Add click event listener to each button
         downloadButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const imageUrl = button.getAttribute('data-image-url');
-                downloadImage(imageUrl);
-            });
-        });
-
+          button.addEventListener('click', () => {
+            const imageUrl = button.getAttribute('data-image-url')
+            downloadImage(imageUrl)
+          })
+        })
+      
         // Function to download image in its original format
         function downloadImage(imageUrl) {
-            // Create a download link and trigger the download
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = imageUrl;
-            a.download = '';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+          // Create a download link and trigger the download
+          const a = document.createElement('a')
+          a.style.display = 'none'
+          a.href = imageUrl
+          a.download = ''
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
         }
-    });
-
-    
-</script>
-</body>
+      })
+    </script>
+  </body>
 </html>

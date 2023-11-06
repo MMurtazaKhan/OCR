@@ -14,8 +14,15 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images/')
 
     def __str__(self):
-        return str(self.image)
+        return str(self.id)
 
+class PDF(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+    pdf = models.FileField(upload_to='pdfs/')  # Use FileField to accept PDFs
+
+    def __str__(self):
+        return str(self.id)
 
 class OCRImage(models.Model):
     folder = models.ForeignKey(Folder, on_delete=models.CASCADE)

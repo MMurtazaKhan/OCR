@@ -7,45 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Folders</title>
     <style>
-        html, body{
+        html, body {
             margin: 0px;
             padding: 0px;
             height: 100%;
         }
-        .container{
+    
+        .container {
             display: flex;
             height: 100%;
         }
-
-        .left-container{
-
+    
+        .left-container {
             width: 30%;
             height: 100%;
-            background-color: rgb(255, 255, 255);
+            background: "white";
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
-        .right-container{
+    
+        .right-container {
             width: 70%;
             height: 100%;
-            background-color: rgb(197, 197, 197);
+            background: #e5ed9f;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding-top: 30px;
-            flex-grow: 1; 
+            flex-grow: 1;
             overflow-y: auto;
         }
-
+    
         #ocr-results {
-            flex-grow: 1; /* Allow the ocr-results div to grow */
-            overflow-y: auto; /* Add vertical scroll if content exceeds height */
-}
-
-        .button1, .button2{
-            background-color: #007bff;
+            min-height: 800px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+    
+        .button1, .button2 {
+            background: #4caf50;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -55,41 +56,49 @@
             cursor: pointer;
             margin-right: 5px;
         }
-
-        .button1:hover {
-            background-color: #0056b3;
+    
+        .button1:hover, .button2:hover {
+            background: #5bc761;
         }
-
-        .button2:hover {
-            background-color: #0056b3;
+    
+        #logout-button {
+            background: #e74c3c;
         }
-
-        .folder-list{
+    
+        #logout-button:hover {
+            background: #e37366;
+        }
+    
+        .folder-list {
             text-decoration: none;
             font-size: 20px;
             font-weight: bold;
-
+            color: #6e7241;
         }
-        .folder-list a{
+    
+        .folder-list a {
             cursor: pointer;
-            color: black;
+            color: #6e7241;
         }
-
+    
+        .folder-list a:hover {
+            cursor: pointer;
+            color: #b3a361;
+        }
+    
         #search-input {
-        margin-bottom: 20px;
-        padding: 10px;
-        width: 70%;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-top: 20px;
-      }
-
-      .folder-box {
-            width: calc(33.33% - 10px);
-            background-color: #ffffff;
             margin-bottom: 20px;
             padding: 10px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    
+        .folder-box {
+            width: calc(33.33% - 10px);
+            background: linear-gradient(to bottom, #fff, #e0e0e0);
             border: 1px solid #ccc;
             border-radius: 5px;
             cursor: pointer;
@@ -97,24 +106,22 @@
             height: 100px;
             width: 280px;
             text-align: center;
+            margin-top: 15px;
         }
-
-        /* Hover effect for folder boxes */
+    
         .folder-box:hover {
-            background-color: #e0e0e0;
+            background: #e0e0e0;
         }
-
+    
         .folder-name {
             font-size: 18px;
             font-weight: bold;
         }
-
-        /* Style the buttons container */
+    
         .folder-buttons {
             margin-top: 10px;
         }
-
-
+    
         #folder-boxes {
             display: flex;
             flex-wrap: wrap;
@@ -122,9 +129,9 @@
             padding-left: 128px;
             padding-right: 128px;
         }
-
+    
         .ocr-button, .view-ocr-button {
-            background-color: #007bff;
+            background:#7d8149;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -132,20 +139,21 @@
             cursor: pointer;
             margin-right: 5px;
         }
-
-        /* Style the OCR and View OCR buttons on hover */
+    
         .ocr-button:hover, .view-ocr-button:hover {
-            background-color: #0056b3;}
-
-
+            background: #c6ce82;
+        }
+        .user-name{
+            color: #6e7241;
+        }
     </style>
-</head>
+    </head>
 <body>
     <div class="container">
         <div class="left-container">
             <h1 style="margin-top: 70px;">Profile</h1>
-            <h3>Name: {{ request.user.username }}</h3>
-            <h1>Folders Uploaded</h1>
+            <h2 style="color: rgb(58, 57, 57);" >Name: <span class="user-name" >{{ request.user.username }}</span></h2>
+            <h2 style="color: rgb(58, 57, 57);" >Folders Uploaded</h2>
             <ul>
                 {% for folder in folders %}
                     <li class="folder-list"><a href="{% url 'view_folder' folder.id %}">{{ folder.name }}</a></li>
